@@ -1,0 +1,4 @@
+Creacion_proyecto;administrativo;Nicolas_Perez;0;false
+Inicia_sig;administrativo;Nicolas_Perez;0;false
+Nueva_Cosa;administrativo;Nicolas_Perez;0;true
+OtraPruebita;gerencia;Nicolas_Perez;14;true

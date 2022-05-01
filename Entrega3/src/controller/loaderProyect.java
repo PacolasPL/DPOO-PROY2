@@ -1,10 +1,15 @@
 package controller;
 import model.*;
+
+import static java.time.temporal.ChronoUnit.SECONDS;
+
 import java.io.BufferedReader;
 /*import java.io.BufferedWriter;*/
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 public class loaderProyect {
@@ -32,7 +37,6 @@ public class loaderProyect {
 		
 		while (linea != null && continuar == true) {
 			String[] partes= linea.split(";");
-			System.out.println(partes[0]);
 			if (partes[0].equals(archivo) ) {
 				continuar = false;
 				
@@ -73,7 +77,7 @@ public class loaderProyect {
 		proyecto Proy = new proyecto(Lider, proName);
 		Proy.putIntegrantes(integrantes);
 		dateString = dateString.replace("T"," ").substring(0,19);
-		Proy.putStartdate(dateString);
+		Proy.putStartdate(Lider.getName(), dateString);
 		Proy.putCurrentTime(timeString);
 		
 		BufferedReader brActividades =  new BufferedReader(new FileReader("./data/" + proName + "_actividades.txt"));
@@ -88,17 +92,13 @@ public class loaderProyect {
 			actividad nuevAct = new actividad(actParts[0].strip(),actParts[1].strip() , principal);
 			nuevAct.setTiempo(Integer.parseInt(actParts[3].strip()));
 			
-			if (actParts[4].strip().equals("false")) {
+			if (actParts[4].strip().equals("true")) {
 				Proy.agregarActividad(nuevAct);
-				System.out.println("Se logro agregar una actividad NO terminada...");
-				
-				
 				principal.setActivities(nuevAct);}
 				
 			
-			else if (actParts[4].strip().equals( "true")) {
+			else if (actParts[4].strip().equals( "false")) {
 				Proy.finalizarActividad(nuevAct);
-				System.out.println("Se logro agregar una SI terminada...");
 				principal.setActivitiesFinal(nuevAct);
 			
 			
@@ -108,9 +108,41 @@ public class loaderProyect {
 		}
 		brActividades.close();
 		
+		
+		
+		BufferedReader rg =  new BufferedReader(new FileReader("./data/"+ proName+"_registro.txt"));
+		linea = rg.readLine();
+		continuar = true;
+		System.out.println("CARGANDO EL REGISTRO DE ACTIVIDAD");
+		
+		while (linea != null && continuar == true && linea.strip() != "" ) {
+			DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss") ;
+			String[] partes= linea.split(";");
+			
+			String act = partes[0].strip();
+			String aCargoDe = partes[1].strip();
+			String fecha1 = partes[2].strip().replace("T"," ").substring(0,19);
+			String fecha2 = partes[3].strip().replace("T"," ").substring(0,19);
+			String comentario = partes[4].strip();
+			
+			LocalDateTime tiempo1 = LocalDateTime.parse(fecha1, format);
+			LocalDateTime tiempo2 = LocalDateTime.parse(fecha2, format);
+			long time = SECONDS.between(tiempo1, tiempo2);
+			
+			
+			actividad acTemp = new actividad(act,"Temporal", usuarios.get(aCargoDe)) ;
+			registro temp = new registro(usuarios.get(aCargoDe), acTemp);
+			
+			temp.putAll(tiempo1, tiempo2, (int)time, comentario);
+			Proy.addLog(temp);
+
+			linea = rg.readLine();
+			
+		}
+		
+		rg.close();
 		controladorProyecto controlador = new controladorProyecto();
 		controlador.agregarProyecto(Proy);
-		
 		return controlador;
 			
 		

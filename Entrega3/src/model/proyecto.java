@@ -1,6 +1,7 @@
 package model;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 import controller.fileWriter;
 
@@ -29,6 +30,7 @@ public class proyecto {
 	private HashMap<String, ArrayList<actividad>> actividades = new HashMap<String, ArrayList<actividad>>();
 	private HashMap<String, ArrayList<actividad>> actividadesFinalizadas = new HashMap<String, ArrayList<actividad>>();
 	private registroActividad registros;
+	fileWriter escritor = new fileWriter();
 	
 	// Crea un nuevo proyecto en base a un integrante (lider) 
 	// y el nombre del proyecto a crear.
@@ -55,12 +57,16 @@ public class proyecto {
 	// Cambia la fechaInicio a una ingresada
 	// a trav�s de un String.
 	
-	public void putStartdate(String fecha) {
+	public void putStartdate(String lider, String fecha) {
 		
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss") ;
 		LocalDateTime inicio = LocalDateTime.parse(fecha, format);
-		System.out.println(inicio.toString());
 		this.fechaInicio = inicio;
+		actividad creacion = new actividad("Creacion proyecto", "Administrativa" ,Lider);
+		registro inicial = new registro(Lider, creacion);
+		inicial.putAll(inicio, inicio, 1, "Creacion completada");
+		registros.delLastLog(0);
+		registros.addLog(inicial);
 	}
 	
 	// Cambia el tiempoTranscurrido a la cantidad (entera)
@@ -73,8 +79,7 @@ public class proyecto {
 	public void actualizarIntegrantes() throws IOException {
 		String[] names = integrantes.keySet().toString().replace("[","").replace("]" ,"").split(",");
 		
-		fileWriter neeF =  new fileWriter( );
-		neeF.actualizarIntegrantes(Name, names);
+		escritor.actualizarIntegrantes(Name, names);
 		
 	}
 	// Devuelve el valor true/false de la variable
@@ -120,14 +125,14 @@ public class proyecto {
 	}
 	
 	public String getActividad(String act, String tipo) {
-		if (actividades.get(tipo) == null) {
+		if (actividadesFinalizadas.get(tipo) == null) {
 			return "\nNO SE LOGRO AGREGAR.\n";
 		}
 		else {
 			
-			for (int i = 0; i < actividades.get(tipo).size(); i++){
+			for (int i = 0; i < actividadesFinalizadas.get(tipo).size(); i++){
 				
-				if (actividades.get(tipo).get(i).getName() ==  act) {
+				if (actividadesFinalizadas.get(tipo).get(i).getName() ==  act) {
 					return "\nSI SE LOGROOOO\n";
 				}
 			
@@ -152,17 +157,31 @@ public class proyecto {
 		}
 		return actividades.get(tipo).get(punt);
 	}
+	
+	public String typeByName(String act) {
+		
+		for (Entry<String, ArrayList<actividad>> entry : actividades.entrySet()) {
+		    ListIterator<actividad> it = entry.getValue().listIterator();
+		     while (it.hasNext()) {
+		    	 actividad temp = it.next();
+		    	 if (temp.getName().strip()== act.strip()) {
+		    		 return entry.getKey();
+		    	 }
+		     }
+		}
+		
+		return "No encontrado";
+	}
+	
 	public void guardarActividades() throws IOException {
-		fileWriter escritor = new fileWriter();
+		
 		String [] temp =actividadesFinalizadas.keySet().toString().replace("[","").replace("]", "").split(",") ;
 
 		boolean pass = (temp.length > 0);
 		String [] temp2 =actividades.keySet().toString().replace("[","").replace("]", "").split(",") ;
 		boolean pas = (temp2.length > 0);
 		escritor.updateActivities(Name, actividades, actividadesFinalizadas, pas, pass);
-		
-		
-		
+			
 	}
 	
 	public String getIntegrantes() {
@@ -251,5 +270,24 @@ public class proyecto {
 		registro finalAct = new registro(Lider, acabar);
 		registros.addLog(finalAct);
 
+	}
+	
+	public ArrayList<registro> regByUser(integrante user){
+		ArrayList<registro>  reg = registros.getLogsFromUser(user);
+		return reg;
+	}
+	
+	public String regStringByUser(integrante user){
+		String reg = registros.getStringLogsFromUser(user);
+		return reg;
+	}
+	
+	public ListIterator<registro> getRegistros(){
+		return registros.getRegistros();
+	}
+	public void actualizarRegistro() throws IOException {
+		ListIterator<registro> regs = getRegistros();
+		escritor.actualizarRegistro(Name, regs);
+		
 	}
 }

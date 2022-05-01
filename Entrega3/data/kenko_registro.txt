@@ -1,0 +1,5 @@
+Creacion proyecto;Nicolas_Perez;2022-04-02T20:31:15;2022-04-02T20:31:15;Creacion completada
+Actualizar_datos;Nicolas_Perez;2022-05-01T15:23:27;2022-05-01T15:23:34;Termine de
+pruebas_generales;Nicolas_Perez;2022-05-01T15:26:58;2022-05-01T15:27:23;Termine mi rtyrnoe
+Actualizar_datos;Nicolas_Perez;2022-05-01T15:33:38;2022-05-01T15:33:54;Termine mi parte
+Creacion de datos;Jose_Daniel;2022-01-11T22:22:11;2022-01-13T22:22:11;Trabajo offline

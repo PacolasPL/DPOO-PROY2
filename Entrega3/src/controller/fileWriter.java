@@ -102,29 +102,32 @@ public class fileWriter {
 			){
 				String linea = lector.readLine();
 				String datos = "";
+				boolean continuar =  true;
 				
-				while (linea != null) {
+				while (linea != null & continuar) { 
 					datos+= linea + "\n";
 					String[] partes = linea.split(";");
 					
 					if ( name.equals(partes[0])) {
 						System.out.println("ERROR. Ese nombre ya existe.");
+						continuar =  false;
 					}
-					
+					linea = lector.readLine();
+				}
+				if (continuar) {
 					boolean result = crearArchivos(name);
 					
 					if(result) {
 						System.out.println("Los archivos fueron creados con �xito.");
+						createFirstData(name, Lider,creacionTime.toString() );
+						BufferedWriter escritor= new BufferedWriter(new FileWriter("./data/proyectos.txt"));
+						escritor.write(datos);
+						escritor.append(name + ";" + Lider.getName() + ";"+ true+";" + creacionTime.toString() +";"+ "0");
+						escritor.close();
 					}
 					else {
 						System.out.println("Alguno de los 3 archivos anteriores no pudo ser creado");
 					}
-					linea = lector.readLine();
-				}
-				
-			try(BufferedWriter escritor= new BufferedWriter(new FileWriter("./data/proyectos.txt"))){
-					escritor.write(datos);
-					escritor.append(name + ";" + Lider.getName() + ";"+ true+";" + creacionTime.toString() +";"+ "0");
 				}
 					
 				
@@ -174,10 +177,12 @@ public class fileWriter {
 			File archivoPrincipal = new File(dir + "/data/" + name + ".txt");
 			File archivoActividades = new File(dir + "/data/" + name + "_actividades.txt");
 			File archivoIntegrantes = new File(dir + "/data/" + name + "_integrantes.txt");
+			File archivoRegistro = new File(dir + "/data/" + name + "_registro.txt");
 			boolean seCreoP = archivoPrincipal.createNewFile();
 			boolean seCreoA = archivoActividades.createNewFile();
 			boolean seCreoI = archivoIntegrantes.createNewFile();
-			return (seCreoP & seCreoA & seCreoI);
+			boolean seCreoR = archivoRegistro.createNewFile();
+			return (seCreoP & seCreoA & seCreoI & seCreoR);
 		}
 		catch(IOException e) {
 			System.out.println("ERROR. IOException");
@@ -187,31 +192,31 @@ public class fileWriter {
 	
 	// Se a�ade la informaci�n predeterminada a los archivos creados previamente.
 	
-	public void createFirstData(File aI, File aA, integrante usuario) throws IOException {
-		String caminoI = aI.getAbsolutePath();
-		String caminoA = aA.getAbsolutePath();
+	public void createFirstData(String name, integrante usuario, String inicio) throws IOException {
 		
-		BufferedWriter escritorI =  new BufferedWriter(new FileWriter(caminoI));
+		BufferedWriter escritorI =  new BufferedWriter(new FileWriter("./data/" + name + "_integrantes.txt"));
 		escritorI.write(usuario.getName() + "\n");
 		escritorI.close();
 		
-		BufferedWriter escritorA =  new BufferedWriter(new FileWriter(caminoA));
+		BufferedWriter escritorA =  new BufferedWriter(new FileWriter("./data/" + name + "_actividades.txt"));
 		escritorA.write("Creacion_proyecto;administrativo;" + usuario.getName() + ";0;false");
 		escritorA.close();
+		
+		BufferedWriter escritorR =  new BufferedWriter(new FileWriter("./data/" + name + "_registro.txt"));
+		escritorR.write("Creacion_proyecto;" + usuario.getName() +";"+ inicio+ ";"+ inicio+ ";Ya se creo el registro de Actividad");
+		escritorR.close();
 	}
 	
 	public void updateActivities(String name, HashMap<String, ArrayList<actividad>> pendientes , HashMap<String,ArrayList<actividad>> actividades,boolean pass, boolean doNo) throws IOException {
 		String toWrite = "";
 		String[] parts= actividades.keySet().toString().replace("[","").replace("]" ,"").split(",");
-		System.out.println( actividades.keySet().toString());
 		if (pass) {
 			for (int i = 0; i< parts.length; i++) {
 				ArrayList<actividad> listTemp= actividades.get(parts[i].strip());
 				if (listTemp != null) {
 				for (int j = 0; j< listTemp.size(); j++) {
 					actividad act = listTemp.get(j);
-					System.out.println("\n Guardnado cambios en " + act.getName() +"\n");
-					toWrite += act.getName() + ";"+ act.getTipoActividad()+ ";" + act.getPrincipal()+ ";" + Integer.toString(act.getTiempoTranscurrido()) + ";" + "true\n";
+					toWrite += act.getName() + ";"+ act.getTipoActividad()+ ";" + act.getPrincipal()+ ";" + Integer.toString(act.getTiempoTranscurrido()) + ";" + "false\n";
 				}
 				}
 			}
@@ -223,8 +228,7 @@ public class fileWriter {
 				if (listTemp != null) {
 				for (int j = 0; j< listTemp.size(); j++) {
 					actividad act = listTemp.get(j);
-					System.out.println("\n Guardnado cambios en " + act.getName() +"\n");
-					toWrite += act.getName() + ";"+ act.getTipoActividad()+ ";" + act.getPrincipal()+ ";" + Integer.toString(act.getTiempoTranscurrido()) + ";" + "false\n";
+					toWrite += act.getName() + ";"+ act.getTipoActividad()+ ";" + act.getPrincipal()+ ";" + Integer.toString(act.getTiempoTranscurrido()) + ";" + "true\n";
 				}
 				}
 			}
@@ -250,6 +254,25 @@ public class fileWriter {
 		BufferedWriter escritor  =  new BufferedWriter (new FileWriter("./data/" + name + "_integrantes.txt"));
 		
 		escritor.write(temp);
+		escritor.close();
+		
+	}
+	
+	public void actualizarRegistro(String names, ListIterator<registro> registroActividad) throws IOException {
+		String toAdd = "";
+		registro temp = registroActividad.next();
+		while (registroActividad.hasNext()) {
+			temp =  registroActividad.next();
+			String name = temp.getAmigoName().strip();
+			String act = temp.getActivityName().strip();
+			String inicio = temp.getDateInicio().strip();
+			String fin = temp.getDateFinal().strip();
+			String com = temp.getComments().strip();
+			
+			toAdd += act+";" + name +";"+ inicio+ ";"+  fin + ";"+ com+"\n";
+		}
+		BufferedWriter escritor  =  new BufferedWriter (new FileWriter("./data/" + names + "_registro.txt"));
+		escritor.write(toAdd);
 		escritor.close();
 		
 	}

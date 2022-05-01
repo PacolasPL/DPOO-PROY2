@@ -16,20 +16,46 @@ public class registroActividad {
 	public void addLog(registro log ) {
 		registros.add(log);
 	}
-	
-	// Función para traer una lista basada en arreglo con los registros
+	public void delLastLog(int pos ) {
+		registros.remove(pos);
+	}
+	// Funciï¿½n para traer una lista basada en arreglo con los registros
 	// de un usuario dado
 	
-	public void getLogsFromUser(integrante usuario) {
+	public ArrayList<registro> getLogsFromUser(integrante usuario) {
 		ListIterator<registro> regIt = registros.listIterator();
 		ArrayList<registro> delUsuario = new ArrayList<registro>();
 		int logs = 0;
 		while(regIt.hasNext()) {
-			if(registros.get(regIt.nextIndex()-1).getAmigoName() == usuario.getName());
+			registro reg = regIt.next();
+			if(reg.getAmigoName().equals( usuario.getName())) {
 				logs += 1;
-				delUsuario.add(registros.get(regIt.nextIndex()-1));
+				delUsuario.add(reg);
+		}
 		}
 		System.out.println("Se consiguieron " + logs + " registros.");
+		return delUsuario;
 	}
-
+	public String getStringLogsFromUser(integrante usuario) {
+		ListIterator<registro> regIt = registros.listIterator();
+		String delUsuario = "";
+		int logs = 0;
+		while(regIt.hasNext()) {
+			registro reg = regIt.next();
+			if( reg.getAmigoName().equals( usuario.getName())) {
+				logs += 1;
+				String temp = Integer.toString(logs) +"- "+ reg.createInd()+"\n" ;
+				delUsuario+= temp;
+			}
+				
+		}
+		if (delUsuario.equals("")) {
+			delUsuario = "\nEste usuario no ha hecho nada.\n";
+		}
+		System.out.println("Se consiguieron " + logs + " registros.");
+		return delUsuario;
+	}
+	public ListIterator<registro> getRegistros(){
+		return registros.listIterator();
+	}
 }

@@ -22,6 +22,12 @@ public class integrante {
 		
 		actividades.put(activity.getName(), activity);
 	}
+	public String hasAct(String activity) {
+		if (actividades.containsKey(activity)) {
+			return "Si se logro";
+		}
+		return "No se logro";
+	}
 	
 	
 	public void setActivitiesFinal(actividad activity) {
@@ -42,7 +48,6 @@ public class integrante {
 		String show = "";
 		for (int i = 0 ; i< actividades.size(); i++) {
 			show += Integer.toString(i+1)+ ". "+ actividades.get(toUse[i].strip()).getName() +", la cuales es de tipo " + actividades.get(toUse[i].strip()).getTipoActividad();
-			System.out.println("\n" + toUse[i].strip());
 			show += "\n";
 		}
 		return show;
@@ -64,8 +69,6 @@ public class integrante {
 		if (proyectos == null) {
 			proyectos = new HashMap<String, String>();
 		}
-		
-		System.out.println(name + " " + nameProy+ " <- Esto se imprime");
 		proyectos.put(nameProy, isLider);
 	}
 	

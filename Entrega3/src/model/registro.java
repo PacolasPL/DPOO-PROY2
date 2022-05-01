@@ -25,6 +25,16 @@ public class registro {
 		return actividadTrabajada;
 	}
 	
+	public String getDateInicio() {
+		return inicio.toString();
+	}
+	public String getDateFinal() {
+		return tiempoFinalizado.toString();
+	}
+	public String getComments() {
+		return this.comentarios;
+	}
+	
 	public String createString() {
 		String data = "";
 		data += "\nActividad: " + actividadTrabajada +"\n";
@@ -33,15 +43,15 @@ public class registro {
 		data += "\nComentarios: "+ comentarios;
 		data += "\nTiempo transcurrido: " +  Math.abs((segundosTranscurrido/3600)) + " horas, "+ Math.abs((segundosTranscurrido%3600)/60)  +" minutos y " +Integer.toString(Math.abs(segundosTranscurrido%60))+ " segundos." ;
 		data += "\nFecha de finalizacion de turno: " + tiempoFinalizado.toString() +"\n";
-		return data;
-		
-		
+		return data;	
 	}
 	
-	public void putAll(LocalDateTime inicio, LocalDateTime finaL , int tiempoFinal ) {
+	public void putAll(LocalDateTime inicio, LocalDateTime finaL , int tiempoFinal , String comentario) {
 		this.comentarios = "Hecho fuera de tiempo";
+		this.inicio = inicio;
 		this.tiempoFinalizado = finaL;
 		this.segundosTranscurrido = tiempoFinal;
+		this.comentarios = comentario;
 	}
 	
 	public int terminarTurno(String comentario) {
@@ -52,5 +62,12 @@ public class registro {
 		this.segundosTranscurrido = sec;
 		return segundosTranscurrido ;
 		
+	}
+	public String createInd() {
+		String data = inicio.toString().replace("T", " ") + " --- " + actividadTrabajada + " trabajada por "+ aCargoDe;
+		return data;
+	}
+	public int getTime() {
+		return segundosTranscurrido;
 	}
 }

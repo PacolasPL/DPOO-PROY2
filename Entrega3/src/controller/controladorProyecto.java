@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.ListIterator;
+import java.util.ArrayList;
 import static java.time.temporal.ChronoUnit.SECONDS;
 
 import model.*;
@@ -49,6 +51,7 @@ public class controladorProyecto {
         this.ActividadActual.actualizarTiempo(minutosTranscurridos);
         Proy.actualizarTiempo(minutosTranscurridos);
         System.out.println(registroActual.createString());
+        Proy.addLog(registroActual);
         fileWriter actualizacion = new fileWriter();
         try {
 			actualizacion.actualizarUsuario(usuario);
@@ -63,9 +66,7 @@ public class controladorProyecto {
 		this.usuarios = loaderProyect.getUserList();
 	}
 	
-	public void actualizarIntegrantes() throws IOException {
-		Proy.actualizarIntegrantes();
-	}
+	
 	// Retorna una actividad de un integrante ingresado, junto con su index
 	// respectivo.
 	
@@ -90,6 +91,12 @@ public class controladorProyecto {
 	
 	public String getActividad(String act, String tipo) {
 		String mensaje = Proy.getActividad(act, tipo);
+		return mensaje;
+	}
+	
+	public String getActividadInte(String name, String act) {
+		integrante amigo = usuarios.get(name);
+		String mensaje = amigo.hasAct(act);
 		return mensaje;
 	}
 	// Realiza el protocolo de iniciar una actividad en el proyecto:
@@ -118,7 +125,7 @@ public class controladorProyecto {
 		
 		activity.actualizarTiempo(timeToAdd);
 		
-		Proy.addLog(registroActual);
+		
 	}
 	
 	// A�ade a un usuario para que tenga el permiso de ingresar al proyecto desde
@@ -198,12 +205,12 @@ public class controladorProyecto {
 	// Agrega una actividad nueva a la lista de actividades por desarrollar de un estudiante
 	// cuyo nombre es ingresado y tambi�n el nombre de la actividad.
 	
-	public void agregarActividad(String aCargoDe, String name, String tipoActividad) 
+	public void agregarActividad(integrante aCargoDe, String name, String tipoActividad) 
 	
 	{
-		actividad act = new actividad(name, tipoActividad, usuarios.get(aCargoDe));
+		actividad act = new actividad(name, tipoActividad, aCargoDe);
 		Proy.agregarActividad(act); 
-		usuarios.get(aCargoDe).setActivities(act);;
+		aCargoDe.setActivities(act);;
 	}
 	
 	public String getIntegrantes() {
@@ -233,7 +240,7 @@ public class controladorProyecto {
 		Proy.agregarIntegrante(amigo);
 	}
 	
-	public String getActividades() {
+	public String getActividadesProy() {
 		return Proy.getActividades();
 	}
 	// Retorna un boolean en base a si un integrante pertenece al proyecto actual.
@@ -251,7 +258,7 @@ public class controladorProyecto {
 	
 	// Retorna un boolean en base a si el atributo Proy es igual a null o no.
 	
-	public void addLog(String name,String act,  String fecha1, String fecha2) {
+	public void addLog(String name,String act,  String fecha1, String fecha2, String comentarios) {
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss") ;
 		LocalDateTime tiempo1 = LocalDateTime.parse(fecha1, format);
 		LocalDateTime tiempo2 = LocalDateTime.parse(fecha2, format);
@@ -261,7 +268,7 @@ public class controladorProyecto {
 		integrante amigo = usuarios.get(name);
 		actividad acti = new actividad(act, "Fuera de tiempo", amigo);
 		registro log = new registro(amigo, acti);
-		log.putAll( tiempo1, tiempo2, timeFinal);
+		log.putAll( tiempo1, tiempo2, timeFinal, comentarios);
 		Proy.addLog(log);
 		
 		
@@ -277,8 +284,46 @@ public class controladorProyecto {
 	}
 	
 	
-	public void guardarActividades() throws IOException {
+	public void guardarDatos() throws IOException {
 		Proy.guardarActividades();
+		Proy.actualizarRegistro();
+		Proy.actualizarIntegrantes();
 	}
+
+	public ArrayList<registro> getRegByUser(integrante user){
+		
+		ArrayList<registro> reg  = Proy.regByUser(user);
+		return reg;
+	}
+		
+	
+		
+	
+public String getStringRegByUser(integrante user){
+		
+		String reg  = Proy.regStringByUser(user);
+		return reg;
+		
+	}
+public String getStatsGen(ArrayList<registro> regs){
+	String data = "";
+	HashMap<String, Integer> map = new HashMap<String, Integer>();
+	int totalTime = 0;
+	ListIterator<registro> regIt = regs.listIterator();
+	while (regIt.hasNext()) {
+		registro temp = regIt.next();
+		String nameAct = temp.getActivityName();
+		String type = Proy.typeByName(nameAct);
+		if (map.get(type) != null) {
+			map.put(type, 0);
+		}
+		map.put(type, map.get(type)+1);
+		totalTime += temp.getTime();
+	}
+	
+	return data;
+	
+}
+
 
 }

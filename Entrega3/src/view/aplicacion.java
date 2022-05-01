@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import controller.*;
 import model.*;
@@ -12,6 +13,7 @@ public class aplicacion {
 	
 	private controladorProyecto controlador = new controladorProyecto();;
 	private integrante usuario;
+	private fileWriter escritor = new fileWriter();
 	
 
 	
@@ -80,8 +82,7 @@ public class aplicacion {
 							seguir = false;
 							
 							System.out.println("Cerrando sesion...");
-							fileWriter actualizar = new fileWriter();
-							actualizar.actualizarUsuario(usuario);
+							escritor.actualizarUsuario(usuario);
 							option = 0;
 							this.usuario = null;
 							}
@@ -114,40 +115,25 @@ public class aplicacion {
 					
 					
 					System.out.println("¿Ya eres parte de nosotros?\nIngresa a tu cuenta:");
-					System.out.println("1. Iniciar sesion.\n0.Volver.");
-					
-					int option2 =  Integer.parseInt(input("-"));
-					if (option2 == 1) {
-	
-
-						System.out.println("\nDigite sus datos para iniciar sesion.");
-						System.out.println("\nNombre: \n");
-						String nombre = input("-");
-						String pass = input("\nPassword:\n-");
-						integrante logrado = controlador.iniciarSesion(nombre, pass);
-						if (logrado != null) {
-							this.usuario = logrado;
-							System.out.println("Inicio de sesion completo");
-							continuar2 = false;
-						}
-						else {
-							System.out.println("No se pudo iniciar sesion...");
-						}
-						
-					}
-					
-					else if (option2 == 0 ) {
-						continuar2 = false;		
-						
+					System.out.println("\nDigite sus datos para iniciar sesion.");
+					System.out.println("\nNombre: \n");
+					String nombre = input("-");
+					String pass = input("\nPassword:\n-");
+					integrante logrado = controlador.iniciarSesion(nombre, pass);
+					if (logrado != null) {
+						this.usuario = logrado;
+						System.out.println("Inicio de sesion completo");
+						continuar2 = false;
 					}
 					else {
-						System.out.println("Seleccione una opcion valida.");
+						System.out.println("No se pudo iniciar sesion...");
 					}
+					
+
 				}
 			}
 			
 			else if (option == 2) {
-				fileWriter escritor = new fileWriter();
 				
 				System.out.println("¿Eres nuevo? Registrate ya.\n");
 				System.out.println("Digite sus datos:\n");
@@ -181,7 +167,6 @@ public class aplicacion {
 		System.out.println("Iniciando creacion de proyecto...\n");
 		
 		String nombre = input("Digite el nombre de su proyecto:\n");
-		fileWriter escritor = new fileWriter();
 		escritor.writeProy(nombre, usuario);
 		controlador.addProyectsOfAmi(usuario, nombre, true);
 		
@@ -195,10 +180,11 @@ public class aplicacion {
 	{
 		System.out.println("Sesion iniciada...\n\n");
 		System.out.println("\n" + controlador.getProjectInfo());
-		String actividades = controlador.getActividades(usuario);
+		
 		
 		boolean cont =  true;
 		while (cont) {
+			String actividades = controlador.getActividades(usuario);
 			showGeneralMenu();
 			boolean isJefe = usuario.getName().equals(controlador.getLider().getName());
 			if (isJefe) {
@@ -223,29 +209,35 @@ public class aplicacion {
 				String nombre = input("Escriba quien realizo la actividad:\n- ");
 				String nombreAct = input("\nEscriba que actividad se realizo:\n- ");
 				String fecha1 = input("\nEscribe la fecha de inicio en este formato: (yyyy-MM-dd HH:mm:ss)\n- " );
-				String fecha2 = input("\nEscribe la fecha de inicio en este formato: (yyyy-MM-dd HH:mm:ss)\n- " );
+				String fecha2 = input("\nEscribe la fecha de finalizacion en este formato: (yyyy-MM-dd HH:mm:ss)\n- " );
+				String comentario = input("\nEscriba los comentario\n- " );
 				
-				controlador.addLog(nombre, nombreAct, fecha1, fecha2);
+				controlador.addLog(nombre, nombreAct, fecha1, fecha2, comentario);
 				
 			}
 			
 			else if (option == 6 && isJefe) {
+				String name = input("\nPor favor, escriba el nombre del usuario...\n");
 				System.out.println(controlador.getIntegrantes()+ "\n");
-				String name = input("\nPor favor, escriba el nombre del usuario...");
+				
 				if (controlador.isIntegrante(name)) {
 					String actividad = input("\nDigite el nombre de la nueva actividad:\n- ").strip();
-					System.out.println("\nLos tipos de actividades son los siguientes:\n"+ controlador.getActividades());
+					System.out.println("\nLos tipos de actividades son los siguientes:\n"+ controlador.getActividadesProy());
 					String tipoActividad = input("\nDigite el nombre del tipo de actividad:\n");
-					controlador.agregarActividad(name, actividad, tipoActividad);
+					integrante aCargoDe;
+					if (name.equals(usuario.getName())) {
+						usuario = controlador.getUsuario(name);
+						aCargoDe = usuario;
+					}
+					else {
+						aCargoDe = controlador.getUsuario(name);
+					}
+					controlador.agregarActividad(aCargoDe, actividad, tipoActividad);
 					
-					System.out.println(controlador.getActividad(actividad, tipoActividad));
+					System.out.println(controlador.getActividadInte(name, actividad));
 					
 					
-				}
-				
-				
-			
-				
+				}	
 		
 		}
 			else if (option == 5 && isJefe) {
@@ -263,29 +255,43 @@ public class aplicacion {
 			
 			}
 			
-			else if (option == 5 && isJefe) {
-				String name = input("Por favor, escriba el nombre del usuario que desea agregar: \n-.");
+			else if (option == 7 && isJefe) {
+				String name = input("Por favor, escriba el nombre del usuario al que desea consultar: \n-.");
 				if (controlador.getUsuario(name) == null) {
 					System.out.println("\nEse nombre aun no esta registrado en nuestra base de datos:\n");
 				}
 				else {
-					controlador.agregarIntegrante(controlador.getUsuario(name));
-					System.out.println("\nIntegrante agregado con exito\n");
-					System.out.println("\nEsta es la nueva lista de integrantes: \n-" + controlador.getIntegrantes()+ "\n");
+					String print = controlador.getStringRegByUser(controlador.getUsuario(name));
+					integrante amigo  = controlador.getUsuario(name);
+					System.out.println("Seleccione de cual registro le gustaria tener mas detalles.\n");
+					ArrayList<registro> regs = controlador.getRegByUser(amigo);
+					
+					boolean seguir = true;
+					while (seguir) {
+						System.out.println(print);
+						int op = Integer.parseInt(input("0- Ver estadisticas generales de este usuario.\n-1) Para volver al menu anterior.\n"));
+						if (op == 0) {
+							seguir = false;
+						}
+						else {
+							registro sel = regs.get(op-1);
+							System.out.println(sel.createString());
+						}
+					}
+					
+					
 				}
 			}
 				
 			else if (option ==0) {
-				fileWriter actualizador = new fileWriter();
 				System.out.print("\nOpcion No Valida\n");
 				try {
-					actualizador.actualizarProy(controlador.getName() , controlador.getLider() , controlador.getStartTime(), controlador.getMinutes());
+					escritor.actualizarProy(controlador.getName() , controlador.getLider() , controlador.getStartTime(), controlador.getMinutes());
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 				
-				controlador.guardarActividades();
-				controlador.actualizarIntegrantes();
+				controlador.guardarDatos();
 				
 				System.out.println("YA TERMINAMOS....\nSALIENDO DE LA APLICACION...");
 				cont = false;
@@ -299,7 +305,7 @@ public class aplicacion {
 		System.out.println("Iniciemos el trabajo.\n¿Como pretendes iniciar?");
 		System.out.println("1. Ver tareas pendientes.");
 		System.out.println("2. Iniciar a trabajar en una actividad.");
-		System.out.println("3. Dar por finalizada una actividad.");
+		System.out.println("3. Finalizar turno");
 		System.out.println("4. Registrar trabajos de una persona offline.");
 		
 	
@@ -307,9 +313,11 @@ public class aplicacion {
 	
 	private void showBossMenu() {
 		System.out.println("----OPCIONES ADMINISTRATIVAS----");
-		System.out.println("6. Agregar y asignar actividad.");
 		System.out.println("5. Agregar miembros al equipo.");
-		System.out.println("7 Dar proyecto por finalizado.");
+		System.out.println("6. Agregar y asignar actividad.");
+		System.out.println("7. Obtener turnos realizados por un usuario.");
+		System.out.println("8. Dar proyecto por finalizado.");
+		
 		
 	}
 	
