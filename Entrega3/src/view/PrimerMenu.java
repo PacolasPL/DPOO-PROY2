@@ -23,18 +23,18 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 
 
-public class PrimerMenu extends JFrame implements ActionListener {
+public class PrimerMenu extends JFrame {
 	
 	Container container = getContentPane();
 	private integrante usuario;
 	
-	JLabel labelMensaje2 = new JLabel("¿Qué deseas hacer?");
+	JLabel labelMensaje2 = new JLabel("ï¿½Quï¿½ deseas hacer?");
 	
 	JButton botonCrear = new JButton("Crear un proyecto");
 	JButton botonAbrir = new JButton("Abrir un proyecto existente");
 	JButton botonConsultar = new JButton("Consultar mis proyectos");
 	
-	JButton botonAcabar = new JButton("Cerrar sesión");
+	JButton botonAcabar = new JButton("Cerrar sesiï¿½n");
 		
     PrimerMenu(integrante usuario)
     {
@@ -47,7 +47,16 @@ public class PrimerMenu extends JFrame implements ActionListener {
     	setLayoutManager();
     	setLocationAndSize(labelMensaje);
     	addComponentsToContainer(labelMensaje);
-    	addActionEvent();
+    	botonCrear.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				CrearProyecto crearProy = new CrearProyecto(usuario);
+	            crearProy.setVisible(true);
+			}
+    		
+    	});
     	
 		JPanel reg = new JPanel();
 		labelMensaje.setFont(new Font("Yu Gothic", Font.PLAIN, 18));
@@ -59,7 +68,7 @@ public class PrimerMenu extends JFrame implements ActionListener {
 		this.setSize(450,300);
 		this.getContentPane().add(reg);
 		this.setResizable(false);
-
+		
 	
 	}
     
@@ -95,18 +104,6 @@ public class PrimerMenu extends JFrame implements ActionListener {
         container.add(botonAcabar);
     }
     
-    public void addActionEvent() {
-        botonAcabar.addActionListener(this);
-    }
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		
-		if (e.getSource() == botonCrear) {
-            CrearProyecto crearProy = new CrearProyecto(usuario);
-            crearProy.setVisible(true);
-        }
-		
-	}
-  
 }
+  
+
