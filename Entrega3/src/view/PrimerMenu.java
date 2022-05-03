@@ -30,15 +30,6 @@ public class PrimerMenu extends JFrame implements ActionListener {
 	JButton botonAbrir = new JButton("Abrir un proyecto existente");
 	JButton botonConsultar = new JButton("Consultar mis proyectos");
 	
-	/// labelCrear.addMouseListener(new MouseAdapter() {
-	/// 		
-	/// 			public void mouseClicked(MouseEvent e)
-	/// 			{
-	/// 				System.out.println("pipipopo");
-	/// 			}
-	/// 		}
-	/// 		)
-	
 	JButton botonAcabar = new JButton("Cerrar sesión");
 		
     PrimerMenu(String name)

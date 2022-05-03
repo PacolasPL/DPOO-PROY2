@@ -17,10 +17,12 @@ import javax.swing.JPanel;
 
 public class PBotones extends JPanel implements ActionListener{
 	
+	private Principal principal;
 	GridBagConstraints constraints = new GridBagConstraints();
 	Color lightblue = new Color(255,255,255);
 
-	PBotones(){
+	PBotones(Principal principal){
+		this.principal = principal;
 		this.setLayout(new GridBagLayout());
 		
 		JLabel labelMensaje = new JLabel("Bienvenido, \npara iniciar, indique qué desea hacer");
@@ -35,7 +37,7 @@ public class PBotones extends JPanel implements ActionListener{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JLogin registro = new JLogin();
+				JLogin registro = new JLogin(principal);
 				registro.setVisible(true);
 			}
 			

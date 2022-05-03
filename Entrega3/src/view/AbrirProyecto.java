@@ -13,25 +13,25 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 
 
-public class CrearProyecto extends JFrame implements ActionListener {
+public class AbrirProyecto extends JFrame implements ActionListener {
 	
 	Container container = getContentPane();
 	
-	JLabel labelMensaje = new JLabel("Ingrese el nombre de su nuevo proyecto");
+	JLabel labelMensaje = new JLabel("Se encontraron los siguientes proyectos");
     
-    JLabel nombreLabel = new JLabel("Nombre del proyecto");
-    JTextField nombreField = new JTextField();
+    JComboBox<String> comboProyectos = new JComboBox<String>();
     
-    JButton botonRevisar = new JButton("Revisar disponibilidad");
-    JButton botonCrear = new JButton("Crear proyecto");
+	JLabel labelSeleccion = new JLabel("Se seleccionó: ");
+    JButton botonAbrir = new JButton("Abrir");
 		
-    CrearProyecto()
+    AbrirProyecto()
     {
     	this.setTitle("Project Manager");
     	setLayoutManager();
@@ -60,13 +60,12 @@ public class CrearProyecto extends JFrame implements ActionListener {
     public void setLocationAndSize()
     {
         //Setting location and Size of each components using setBounds() method.
-    	labelMensaje.setBounds(20,50,360,30);
+    	labelMensaje.setBounds(20,50,280,30);
         
-        nombreField.setBounds(20,100,200,20);
-        nombreLabel.setBounds(20,120,125,30);
+        comboProyectos.setBounds(20,80,280,30);
         
-        botonRevisar.setBounds(20,160,160,30);
-        botonCrear.setBounds(200,160,130,30);
+        labelSeleccion.setBounds(20,160,200,30);
+        botonAbrir.setBounds(275,170,75,20);
   
   
     }
@@ -76,16 +75,14 @@ public class CrearProyecto extends JFrame implements ActionListener {
        //Adding each components to the Container
     	container.add(labelMensaje);
     	
-        container.add(nombreField);
-        container.add(nombreLabel);
+        container.add(comboProyectos);
         
-        container.add(botonRevisar);
-        container.add(botonCrear);
+        container.add(labelSeleccion);
+        container.add(botonAbrir);
     }
     
     public void addActionEvent() {
-    	botonRevisar.addActionListener(this);
-    	botonCrear.addActionListener(this);
+    	botonAbrir.addActionListener(this);
     }
 
 	@Override

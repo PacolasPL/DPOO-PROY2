@@ -11,7 +11,7 @@ import model.*;
 
 public class aplicacion {
 	
-	private controladorProyecto controlador = new controladorProyecto();;
+	private controladorProyecto controlador = new controladorProyecto();
 	private integrante usuario;
 	private fileWriter escritor = new fileWriter();
 	

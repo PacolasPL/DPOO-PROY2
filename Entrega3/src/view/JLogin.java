@@ -1,6 +1,9 @@
 package view;
 
 import javax.swing.JTextField;
+
+import model.integrante;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -10,6 +13,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -18,10 +23,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 
+import controller.*;
 
 public class JLogin extends JFrame implements ActionListener {
 	
 	Container container = getContentPane();
+	private controladorProyecto controlador = new controladorProyecto();
+	private integrante usuario;
+	private Principal principal;
 	
 	JLabel labelMensaje = new JLabel("¿Ya tienes una cuenta en la app?");
 	JLabel labelMensaje2 = new JLabel("Ingresa a tu usuario");
@@ -35,8 +44,9 @@ public class JLogin extends JFrame implements ActionListener {
     JButton resetButton = new JButton("Borrar todo");
     JCheckBox showPassword = new JCheckBox("Mostrar constraseña");
 		
-    JLogin()
+    JLogin(Principal principal)
     {
+    	this.principal = principal;
     	this.setTitle("Inicio de sesión");
     	setLayoutManager();
     	setLocationAndSize();
@@ -100,6 +110,37 @@ public class JLogin extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == loginButton) {
+			String nombre = userTextField.getText();
+			char[] passChar = passwordField.getPassword();
+			String pass = "";
+			
+			for(char x : passChar) {
+				pass += x;
+			}
+            try {
+				integrante logrado = controlador.iniciarSesion(nombre, pass);
+				if(logrado != null) {
+					this.usuario = logrado;
+					String nombreUsuario = this.usuario.getName();
+					principal.volverInvisible();
+					
+					PrimerMenu pMenu = new PrimerMenu(nombreUsuario);
+					pMenu.setVisible(true);
+					this.setVisible(false);
+				}
+				else {
+					
+				}
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        }
+		
 		if (e.getSource() == resetButton) {
             userTextField.setText("");
             passwordField.setText("");
