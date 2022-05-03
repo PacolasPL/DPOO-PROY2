@@ -77,11 +77,18 @@ public class integrante {
 			return null;
 		}
 		else {
-			String Names = proyectos.keySet().toString();
+			String Names = proyectos.keySet().toString().replace("[","").replace("]","").strip();
 			return Names;
 		}
-		
 	}
+	public String[] getProyListAmi() {
+		
+		String temp =  getProyect( );
+		String[] list = temp.split(",");
+		
+		return list;	
+	}
+	
 	public boolean isLider(String proyecto) {
 		boolean Lider =  false;
 		if (proyectos.get(proyecto).equals("true")) {

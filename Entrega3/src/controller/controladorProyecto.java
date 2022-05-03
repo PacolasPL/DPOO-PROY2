@@ -181,6 +181,10 @@ public class controladorProyecto {
 			return temp;
 		}	
 	}
+	 
+	
+		
+	
 	
 	// Retorna un String con un mensaje para imprimir en base a la informaci�n
 	// del proyecto actual.

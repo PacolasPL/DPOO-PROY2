@@ -1,6 +1,10 @@
 package view;
 
 import javax.swing.JTextField;
+
+import controller.controladorProyecto;
+import model.integrante;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -26,28 +30,29 @@ public class AbrirProyecto extends JFrame implements ActionListener {
 	
 	JLabel labelMensaje = new JLabel("Se encontraron los siguientes proyectos");
     
-    JComboBox<String> comboProyectos = new JComboBox<String>();
-    
-	JLabel labelSeleccion = new JLabel("Se seleccionó: ");
+    JComboBox comboProyectos ;
+	JLabel labelSeleccion = new JLabel("Se seleccionï¿½: ");
     JButton botonAbrir = new JButton("Abrir");
+  
 		
-    AbrirProyecto()
+    AbrirProyecto(integrante amigo)
     {
+    	String[] lista = amigo.getProyListAmi();
+    	this.comboProyectos = new JComboBox(lista);
     	this.setTitle("Project Manager");
     	setLayoutManager();
     	setLocationAndSize();
     	addComponentsToContainer();
     	addActionEvent();
-    	
 		JPanel reg = new JPanel();
 		labelMensaje.setFont(new Font("Yu Gothic", Font.PLAIN, 14));
-		
+
 		reg.setLayout(new GridBagLayout());
 		reg.setBackground(new Color(160,200,255));
 		
 		this.setSize(380,250);
 		this.getContentPane().add(reg);
-		this.setResizable(false);
+		this.setResizable(true);
 
 	
 	}
@@ -74,6 +79,7 @@ public class AbrirProyecto extends JFrame implements ActionListener {
     {
        //Adding each components to the Container
     	container.add(labelMensaje);
+
     	
         container.add(comboProyectos);
         

@@ -47,6 +47,7 @@ public class PrimerMenu extends JFrame {
     	setLayoutManager();
     	setLocationAndSize(labelMensaje);
     	addComponentsToContainer(labelMensaje);
+    	
     	botonCrear.addActionListener(new ActionListener() {
 
 			@Override
@@ -54,6 +55,17 @@ public class PrimerMenu extends JFrame {
 				// TODO Auto-generated method stub
 				CrearProyecto crearProy = new CrearProyecto(usuario);
 	            crearProy.setVisible(true);
+			}
+    		
+    	});
+    	botonAbrir.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				AbrirProyecto abrirProy = new AbrirProyecto(usuario);
+	            abrirProy.setVisible(true);
+				
 			}
     		
     	});
