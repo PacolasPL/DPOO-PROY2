@@ -18,22 +18,35 @@ import javax.swing.JPanel;
 public class PBotones extends JPanel implements ActionListener{
 	
 	GridBagConstraints constraints = new GridBagConstraints();
-	Color lightblue = new Color(51,136,255);
+	Color lightblue = new Color(255,255,255);
 
 	PBotones(){
 		this.setLayout(new GridBagLayout());
 		
-		JButton buttonNuevo = new JButton("Iniciar Sesion");
+		JLabel labelMensaje = new JLabel("Bienvenido, \npara iniciar, indique qué desea hacer");
+		JButton buttonNuevo = new JButton("Iniciar sesión");
 		JButton buttonRegistrar = new JButton("Registrarse");
-		addButton(buttonNuevo, 1, 0, buttonNuevo);
-		addButton(buttonRegistrar , 1,  1, buttonRegistrar);
+		
+		addLabel(labelMensaje, 1, 0, labelMensaje);
+		addButton(buttonNuevo, 1, 1, buttonNuevo);
+		addButton(buttonRegistrar , 1,  2, buttonRegistrar);
 		
 		buttonNuevo.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JRegistro registro = new JRegistro();
+				JLogin registro = new JLogin();
 				registro.setVisible(true);
+			}
+			
+		});
+		
+		buttonRegistrar.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JRegistrar registrar = new JRegistrar();
+				registrar.setVisible(true);
 				
 			}
 			
@@ -47,8 +60,20 @@ public class PBotones extends JPanel implements ActionListener{
         constraints.insets = new Insets(5, 80, 5, 80);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         button.setAlignmentX(this.CENTER_ALIGNMENT);
-        button.setBackground(new Color(0,2,222));
+        button.setBackground(new Color(255,255,255));
         button.setForeground(Color.black);
+        
+        add(component, constraints);
+      }
+	
+	void addLabel(Component component, int x, int y,JLabel label) {
+        constraints.gridx = x;
+        constraints.gridy = y;
+        constraints.insets = new Insets(5, 80, 5, 80);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        label.setAlignmentX(this.CENTER_ALIGNMENT);
+        label.setBackground(new Color(255,255,255));
+        label.setForeground(Color.black);
         
         add(component, constraints);
       }
