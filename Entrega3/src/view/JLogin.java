@@ -35,7 +35,6 @@ public class JLogin extends JFrame implements ActionListener {
 	JLabel labelMensaje = new JLabel("¿Ya tienes una cuenta en la app?");
 	JLabel labelMensaje2 = new JLabel("Ingresa a tu usuario");
 	
-	
     JLabel userLabel = new JLabel("Usuario");
     JLabel passwordLabel = new JLabel("Contraseña");
     JTextField userTextField = new JTextField();
@@ -122,10 +121,9 @@ public class JLogin extends JFrame implements ActionListener {
 				integrante logrado = controlador.iniciarSesion(nombre, pass);
 				if(logrado != null) {
 					this.usuario = logrado;
-					String nombreUsuario = this.usuario.getName();
 					principal.volverInvisible();
 					
-					PrimerMenu pMenu = new PrimerMenu(nombreUsuario);
+					PrimerMenu pMenu = new PrimerMenu(logrado);
 					pMenu.setVisible(true);
 					this.setVisible(false);
 				}

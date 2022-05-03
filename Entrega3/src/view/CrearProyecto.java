@@ -1,6 +1,10 @@
 package view;
 
 import javax.swing.JTextField;
+
+import controller.fileWriter;
+import model.integrante;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -10,6 +14,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -22,16 +27,19 @@ import javax.swing.JPasswordField;
 public class CrearProyecto extends JFrame implements ActionListener {
 	
 	Container container = getContentPane();
+	private fileWriter escritor = new fileWriter();
+	private integrante usuario;
 	
 	JLabel labelMensaje = new JLabel("Ingrese el nombre de su nuevo proyecto");
     
     JLabel nombreLabel = new JLabel("Nombre del proyecto");
+    JLabel disponibleLabel = new JLabel("");
     JTextField nombreField = new JTextField();
     
     JButton botonRevisar = new JButton("Revisar disponibilidad");
     JButton botonCrear = new JButton("Crear proyecto");
 		
-    CrearProyecto()
+    CrearProyecto(integrante usuario)
     {
     	this.setTitle("Project Manager");
     	setLayoutManager();
@@ -63,6 +71,7 @@ public class CrearProyecto extends JFrame implements ActionListener {
     	labelMensaje.setBounds(20,50,360,30);
         
         nombreField.setBounds(20,100,200,20);
+        disponibleLabel.setBounds(230,120,125,30);
         nombreLabel.setBounds(20,120,125,30);
         
         botonRevisar.setBounds(20,160,160,30);
@@ -77,6 +86,7 @@ public class CrearProyecto extends JFrame implements ActionListener {
     	container.add(labelMensaje);
     	
         container.add(nombreField);
+        container.add(disponibleLabel);
         container.add(nombreLabel);
         
         container.add(botonRevisar);
@@ -90,9 +100,25 @@ public class CrearProyecto extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == botonRevisar) {
+            if(usuario.getProyect().contains(nombreField.getText())) {
+            	disponibleLabel.setText("¡No disponible!");
+            }
+            
+            else {
+            	disponibleLabel.setText("¡Disponible!");
+            }
+        }
 		
-		
-		
+		if (e.getSource() == botonCrear) {
+            if(usuario.getProyect().contains(nombreField.getText())) {
+            	String nombre = nombreField.getText();
+            	try {
+					escritor.writeProy(nombre, usuario);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+            }
+        }
 	}
-  
 }

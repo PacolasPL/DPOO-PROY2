@@ -1,6 +1,9 @@
 package view;
 
 import javax.swing.JTextField;
+
+import model.integrante;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -23,6 +26,7 @@ import javax.swing.JPasswordField;
 public class PrimerMenu extends JFrame implements ActionListener {
 	
 	Container container = getContentPane();
+	private integrante usuario;
 	
 	JLabel labelMensaje2 = new JLabel("¿Qué deseas hacer?");
 	
@@ -32,10 +36,11 @@ public class PrimerMenu extends JFrame implements ActionListener {
 	
 	JButton botonAcabar = new JButton("Cerrar sesión");
 		
-    PrimerMenu(String name)
+    PrimerMenu(integrante usuario)
     {
     	this.setTitle("Project Manager");
     	
+    	String name = usuario.getName();
     	String mensaje = "Bienvenido, " + name;
     	JLabel labelMensaje = new JLabel(mensaje);
     	
@@ -82,9 +87,11 @@ public class PrimerMenu extends JFrame implements ActionListener {
        //Adding each components to the Container
     	container.add(labelMensaje);
         container.add(labelMensaje2);
+        
         container.add(botonCrear);
         container.add(botonAbrir);
         container.add(botonConsultar);
+        
         container.add(botonAcabar);
     }
     
@@ -95,7 +102,10 @@ public class PrimerMenu extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		
+		if (e.getSource() == botonCrear) {
+            CrearProyecto crearProy = new CrearProyecto(usuario);
+            crearProy.setVisible(true);
+        }
 		
 	}
   
