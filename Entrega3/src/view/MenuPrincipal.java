@@ -1,6 +1,7 @@
 package view;
 
 import model.integrante;
+import model.proyecto;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -15,24 +16,27 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
-public class PrimerMenu extends JFrame {
+public class MenuPrincipal extends JFrame {
 	
 	Container container = getContentPane();
+	private integrante usuario;
+	private proyecto actual;
 	
-	JLabel labelMensaje2 = new JLabel("ï¿½Quï¿½ deseas hacer?");
+	JLabel labelMensaje2 = new JLabel("¿Cómo vas a iniciar?");
 	
 	JButton botonCrear = new JButton("Crear un proyecto");
 	JButton botonAbrir = new JButton("Abrir un proyecto existente");
 	JButton botonConsultar = new JButton("Consultar mis proyectos");
 	
-	JButton botonAcabar = new JButton("Cerrar sesiï¿½n");
+	JButton botonAcabar = new JButton("Cerrar sesión");
 		
-    PrimerMenu(integrante usuario)
+    MenuPrincipal(integrante usuario, proyecto actual)
     {
-    	this.setTitle("Project Manager");
+    	this.actual = actual;
+    	String name = actual.getName();
+    	this.setTitle("Project Manager - en " + name);
     	
-    	String name = usuario.getName();
-    	String mensaje = "Bienvenido, " + name;
+    	String mensaje = "Bienvenido a " + name;
     	JLabel labelMensaje = new JLabel(mensaje);
     	
     	setLayoutManager();
@@ -56,21 +60,10 @@ public class PrimerMenu extends JFrame {
 			}
     		
     	});
-    	botonAbrir.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				AbrirProyecto abrirProy = new AbrirProyecto(usuario);
-	            abrirProy.setVisible(true);
-				
-			}
-    		
-    	});
     	
 		JPanel reg = new JPanel();
-		labelMensaje.setFont(new Font("Yu Gothic", Font.PLAIN, 18));
-		labelMensaje2.setFont(new Font("Yu Gothic", Font.PLAIN, 22));
+		labelMensaje.setFont(new Font("Yu Gothic", Font.PLAIN, 16));
+		labelMensaje2.setFont(new Font("Yu Gothic", Font.PLAIN, 16));
 		
 		reg.setLayout(new GridBagLayout());
 		reg.setBackground(new Color(160,200,255));
