@@ -1,6 +1,9 @@
 package view;
 
 import javax.swing.JTextField;
+
+import controller.fileWriter;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -21,11 +24,11 @@ import javax.swing.JPasswordField;
 
 public class JRegistrar extends JFrame implements ActionListener {
 	
+	private fileWriter escritor = new fileWriter();
 	Container container = getContentPane();
 	
 	JLabel labelMensaje = new JLabel("¿No tienes una cuenta en la app?");
 	JLabel labelMensaje2 = new JLabel("Crea un usuario");
-	
 	
     JLabel userLabel = new JLabel("Usuario");
     JLabel passwordLabel = new JLabel("Contraseña");
@@ -33,7 +36,7 @@ public class JRegistrar extends JFrame implements ActionListener {
     JTextField userTextField = new JTextField();
     JTextField mailField = new JTextField();
     JPasswordField passwordField = new JPasswordField();
-    JButton loginButton = new JButton("Iniciar sesión");
+    JButton registerButton = new JButton("Registrar");
     JButton resetButton = new JButton("Borrar todo");
     JCheckBox showPassword = new JCheckBox("Mostrar constraseña");
 		
@@ -78,7 +81,7 @@ public class JRegistrar extends JFrame implements ActionListener {
         userTextField.setBounds(150,150,150,30);
         passwordField.setBounds(150,240,150,30);
         showPassword.setBounds(150,270,150,30);
-        loginButton.setBounds(50,320,120,30);
+        registerButton.setBounds(50,320,120,30);
         resetButton.setBounds(200,320,100,30);
   
   
@@ -98,18 +101,33 @@ public class JRegistrar extends JFrame implements ActionListener {
         container.add(userTextField);
         container.add(passwordField);
         container.add(showPassword);
-        container.add(loginButton);
+        container.add(registerButton);
         container.add(resetButton);
     }
     
     public void addActionEvent() {
-        loginButton.addActionListener(this);
+        registerButton.addActionListener(this);
         resetButton.addActionListener(this);
         showPassword.addActionListener(this);
     }
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == registerButton) {
+			String nombre = userTextField.getText();
+			char[] passChar = passwordField.getPassword();
+			String pass = "";
+			String correo = mailField.getText();
+			
+			for(char x : passChar) {
+				pass += x;
+			}
+			
+			escritor.writeUser(nombre, correo, pass);
+			
+			this.setVisible(false);
+        }
+		
 		if (e.getSource() == resetButton) {
             userTextField.setText("");
             passwordField.setText("");
