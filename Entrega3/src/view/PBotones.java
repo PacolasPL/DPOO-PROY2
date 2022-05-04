@@ -47,7 +47,7 @@ public class PBotones extends JPanel implements ActionListener{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JRegistrar registrar = new JRegistrar();
+				JRegistrar registrar = new JRegistrar(principal);
 				registrar.setVisible(true);
 				
 			}

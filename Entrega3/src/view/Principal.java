@@ -16,17 +16,19 @@ public class Principal extends JFrame{
 		
 		this.add(izquierda, BorderLayout.WEST);
 		this.add(pBotones, BorderLayout.EAST);
-		
 }
 	
 	public static void main(String[] args) {
 		Principal fPrincipal = new Principal();
-		fPrincipal.setVisible(true);
+		fPrincipal.volverVisible();
 	}
 	
 	public void volverInvisible() {
 		this.setVisible(false);
 	}
-		
+	
+	public void volverVisible() {
+		this.setVisible(true);
+	}
 	
 }

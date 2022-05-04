@@ -12,7 +12,23 @@ public class registroActividad {
 		registros.add(inicial);
 		
 	}
-	
+
+	public registro getByIndex(int index){
+		registro reg =  registros.get(index);
+		return reg;
+	}
+
+	public String[] getSetActs(){
+		String name = "";
+		ListIterator<registro> it = registros.listIterator();
+		while (it.hasNext()){
+			registro temp = it.next();
+			name+= temp.getDateInicio() + "   "+ temp.getActivityName()+";";
+		}
+		String[] set =  name.split(";");
+		return set;
+	}
+
 	public void addLog(registro log ) {
 		registros.add(log);
 	}

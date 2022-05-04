@@ -1,9 +1,7 @@
 package view;
 
-import javax.swing.JTextField;
-
 import controller.controladorProyecto;
-import controller.loaderProyect;
+import model.actividad;
 import model.integrante;
 
 import java.awt.Color;
@@ -12,7 +10,6 @@ import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -21,29 +18,34 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
-public class AbrirProyecto extends JFrame implements ActionListener {
+public class IniciarActividad extends JFrame implements ActionListener {
 	
 	Container container = getContentPane();
 	
-	PrimerMenu pMenu;
+	MenuPrincipal mPrin;
 	integrante usuario;
+	private controladorProyecto control;
 	
-	JLabel labelMensaje = new JLabel("Se encontraron los siguientes proyectos");
+	JLabel labelMensaje = new JLabel("Elija la actividad en la que desea trabajar");
     
-    JComboBox comboProyectos;
+    JComboBox comboActividades;
     
 	JLabel labelSeleccion = new JLabel("Se seleccionó: ");
-    JButton botonAbrir = new JButton("Abrir");
+    JButton botonIniciar = new JButton("Iniciar");
 		
-    AbrirProyecto(integrante amigo, PrimerMenu pMenu)
+    IniciarActividad(integrante amigo, MenuPrincipal mPrin, controladorProyecto control)
     {
-    	this.pMenu = pMenu;
+    	this.mPrin = mPrin;
+		this.control = control;
     	
-    	String[] lista = amigo.getProyListAmi();
-    	this.comboProyectos = new JComboBox(lista);
+    	String[] actividades = amigo.mostrarPendientes();
+		System.out.println(actividades);
+
+    	this.comboActividades = new JComboBox(actividades);
     	this.usuario = amigo;
-    	comboProyectos.setSelectedIndex(0);
-    	comboProyectos.addActionListener(this);
+
+    	comboActividades.setSelectedIndex(0);
+    	comboActividades.addActionListener(this);
     	
     	this.setTitle("Project Manager");
     	setLayoutManager();
@@ -73,10 +75,10 @@ public class AbrirProyecto extends JFrame implements ActionListener {
         //Setting location and Size of each components using setBounds() method.
     	labelMensaje.setBounds(20,50,280,30);
         
-        comboProyectos.setBounds(20,80,280,30);
+        comboActividades.setBounds(20,80,280,30);
         
         labelSeleccion.setBounds(20,160,200,30);
-        botonAbrir.setBounds(275,170,75,20);
+        botonIniciar.setBounds(275,170,75,20);
   
   
     }
@@ -87,45 +89,33 @@ public class AbrirProyecto extends JFrame implements ActionListener {
     	container.add(labelMensaje);
 
     	
-        container.add(comboProyectos);
+        container.add(comboActividades);
         
         container.add(labelSeleccion);
-        container.add(botonAbrir);
+        container.add(botonIniciar);
     }
     
     public void addActionEvent() {
-    	botonAbrir.addActionListener(this);
+    	botonIniciar.addActionListener(this);
     }
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if (e.getSource() == comboProyectos) {
-			String nombreProyecto = (String) comboProyectos.getSelectedItem();
-			labelSeleccion.setText("Se seleccionó: " + nombreProyecto);
+		if (e.getSource() == comboActividades) {
+			String nombreActividad = (String) comboActividades.getSelectedItem();
+			labelSeleccion.setText("Se seleccionó: " + nombreActividad);
         }
 		
-		if (e.getSource() == botonAbrir) {
-			String nombreProyecto = (String) comboProyectos.getSelectedItem();
-			try {
-				controladorProyecto control = loaderProyect.cargarArchivo(nombreProyecto);
-				if (control != null) {
-					control = loaderProyect.cargarArchivo(nombreProyecto);
-					boolean ingreso = control.iniciarSesionProyecto(usuario.getName());
-					if (ingreso) {
-						String[] actividades = control.getActividades(usuario);
-						MenuPrincipal mPrincipal = new MenuPrincipal(usuario, actividades, control);
-						mPrincipal.setVisible(true);
-						this.pMenu.setVisible(false);
-					}
-				}
-				
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			
+		if (e.getSource() == botonIniciar) {
+			String nombreActividad = (String) comboActividades.getSelectedItem();
+			actividad act = this.usuario.getActividad(nombreActividad);
+			control.iniciarActividad(this.usuario, act);
+
+			MenuActividadCargada mActCargada = new MenuActividadCargada(this.usuario, control);
+			mActCargada.setVisible(true);
 			this.setVisible(false);
-			
+			this.mPrin.setVisible(false);
         }	
 	}
 }

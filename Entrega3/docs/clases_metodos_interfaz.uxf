@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>6</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>456</x>
+      <y>480</y>
+      <w>126</w>
+      <h>204</h>
+    </coordinates>
+    <panel_attributes>&lt;Interfaz&gt;
+controladorProyecto
+--
+Proyecto Proy;
+Usuario usuarioActual;
+Actividad ActividadActual;
+registro registroActual;
+--
+integrante getIntegrante();
+String getName();
+String createStringData();
+ArrayList getIntegrantes()
+boolean iniciarSesion(String name);
+boolean agregarIntegrantes(intregrante);
+boolean agregarActividad();
+actividad getActividad();
+void iniciarActividad();
+void terminarTurno();
+registroActividad getRegistro();
+ArrayList&lt;registro&gt; getRegistros(String actividad);
+String getUserStats();
+void changeProyState(boolean);</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>282</x>
+      <y>612</y>
+      <w>126</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>integrante
+--
+String nombre;
+String correo;
+String pass;
+--
+boolean enProyecto();
+String getName();
+String getCorreo();
+String[] getPendientes();
+String[] getTotalActs();
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>768</x>
+      <y>474</y>
+      <w>126</w>
+      <h>114</h>
+    </coordinates>
+    <panel_attributes>Actividad
+--
+String nombre:
+String TipoActividad;
+String duracion:
+LocalDateTime inicio:
+int segundosTranscurridos:
+--
+String getName();
+String getTipo();
+String calcularTiempo();
+getStringData();</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>732</x>
+      <y>360</y>
+      <w>126</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>&lt;interfaz&gt;
+fileLoader
+--
+--
+controladorProyecto controlador;
+void cargarUsuarios();
+void cargarProyecto(String name);
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>174</x>
+      <y>378</y>
+      <w>162</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>&lt;interfaz&gt;
+fileWriter
+--
+--
+void guardarUsuarios(controlador);
+void actualizarProyecto(proyecto Proy);
+boolean crearArchivos(String name);
+void createFirstData();
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>570</x>
+      <y>414</y>
+      <w>174</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;270.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>612</x>
+      <y>660</y>
+      <w>126</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>registro
+--
+LocalDateTime inicio;
+LocalDateTime final;
+String actividad;
+int segundos transcurridos;
+--
+String getStringData();
+String getInicio();</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>600</x>
+      <y>552</y>
+      <w>126</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>RegistroActividad
+--
+ArrayList&lt;registro&gt; list;
+--
+ArrayList&lt;registro&gt; getRegistro();
+Hasmap&lt;String, HashMap&gt; getData();
+void addRegistro(registro)
+ArrayList&lt;registro&gt; actRegs(String actividad);
+ 
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>672</x>
+      <y>624</y>
+      <w>126</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+Esta compuesto de registros</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>516</x>
+      <y>432</y>
+      <w>18</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>402</x>
+      <y>678</y>
+      <w>222</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+Un usuario inicia sesion</panel_attributes>
+    <additional_attributes>200.0;10.0;200.0;30.0;10.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>576</x>
+      <y>522</y>
+      <w>114</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+Se crea un registro
+</panel_attributes>
+    <additional_attributes>10.0;20.0;170.0;20.0;170.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>576</x>
+      <y>510</y>
+      <w>204</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;320.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>720</x>
+      <y>582</y>
+      <w>120</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+Tiene un registro</panel_attributes>
+    <additional_attributes>10.0;30.0;180.0;30.0;180.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>582</y>
+      <w>522</w>
+      <h>192</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+Un integrante la realiza</panel_attributes>
+    <additional_attributes>10.0;230.0;10.0;300.0;850.0;300.0;850.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>384</y>
+      <w>132</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+fileWriter recibe los datos.
+</panel_attributes>
+    <additional_attributes>10.0;20.0;200.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>450</x>
+      <y>372</y>
+      <w>126</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>&lt;Interfaz&gt;
+Principal
+--
+controladorProyecto controlador;
+--
+void iniciarSesion();
+void registrarse();</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>306</y>
+      <w>144</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>220.0;110.0;220.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>192</x>
+      <y>258</y>
+      <w>174</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>&lt;JFrame&gt;
+Registrar
+--
+--
+void Registrar(String name, String correo, 
+String cotra)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>648</x>
+      <y>234</y>
+      <w>174</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>&lt;JFrame&gt;
+Iniciar Sesion
+--
+--
+void IniciarSesion(String name,String cotra)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>516</x>
+      <y>306</y>
+      <w>144</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0;220.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>450</x>
+      <y>198</y>
+      <w>126</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>menuPrincipal
+--
+--
+void abrirProyecto();
+void crearProyecto();
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>504</x>
+      <y>234</y>
+      <w>144</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+Pasa informacion del controlador.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;230.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>144</x>
+      <y>210</y>
+      <w>324</w>
+      <h>330</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>510.0;10.0;10.0;10.0;10.0;520.0;520.0;530.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>270</x>
+      <y>120</y>
+      <w>174</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>&lt;JFrame&gt;
+abrirProyecto
+--
+--
+void abrirProyecto(String name,
+integrante usuario)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>618</x>
+      <y>126</y>
+      <w>174</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>&lt;JFrame&gt;
+crearProyecto
+--
+--
+void crearProyecto(String name)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>516</x>
+      <y>132</y>
+      <w>114</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0;170.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>438</x>
+      <y>138</y>
+      <w>54</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>70.0;100.0;70.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>498</x>
+      <y>96</y>
+      <w>144</w>
+      <h>114</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+Pasa informacion del controlador.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>438</x>
+      <y>6</y>
+      <w>138</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>&lt;Interfaz&gt;
+MenuProyecto
+--
+void iniciarActividad()
+void finalizarTurno()
+void verRegistroActividad();
+void agregarActividad()
+void agregarIntegrante()
+void agregarActividadOffLine()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

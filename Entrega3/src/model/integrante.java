@@ -36,21 +36,15 @@ public class integrante {
 		
 	}
 	
-	public actividad getActividad(int opt) {
-		String[] toUse = actividades.keySet().toString().replace("[", "").replace("]", "").split(",");
-		actividad act = actividades.get(toUse[opt].strip());
+	public actividad getActividad(String nameAct) {
+		actividad act = actividades.get(nameAct.strip());
 		return act ;
 	}
 	
-	public String mostrarPendientes()
+	public String[] mostrarPendientes()
 	{
 		String[] toUse = actividades.keySet().toString().replace("[", "").replace("]", "").split(",");
-		String show = "";
-		for (int i = 0 ; i< actividades.size(); i++) {
-			show += Integer.toString(i+1)+ ". "+ actividades.get(toUse[i].strip()).getName() +", la cuales es de tipo " + actividades.get(toUse[i].strip()).getTipoActividad();
-			show += "\n";
-		}
-		return show;
+		return toUse;
 	}
 	
 	public String getCorreo() {

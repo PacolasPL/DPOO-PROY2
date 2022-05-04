@@ -120,7 +120,7 @@ public class JLogin extends JFrame implements ActionListener {
 					this.usuario = logrado;
 					principal.volverInvisible();
 					
-					PrimerMenu pMenu = new PrimerMenu(logrado);
+					PrimerMenu pMenu = new PrimerMenu(logrado, principal);
 					pMenu.setVisible(true);
 					this.setVisible(false);
 				}

@@ -24,6 +24,7 @@ import javax.swing.JPasswordField;
 
 public class JRegistrar extends JFrame implements ActionListener {
 	
+	private Principal principal;
 	private fileWriter escritor = new fileWriter();
 	Container container = getContentPane();
 	
@@ -40,8 +41,9 @@ public class JRegistrar extends JFrame implements ActionListener {
     JButton resetButton = new JButton("Borrar todo");
     JCheckBox showPassword = new JCheckBox("Mostrar constraseña");
 		
-    JRegistrar()
+    JRegistrar(Principal principal)
     {
+    	this.principal = principal;
     	this.setTitle("Registro de usuario");
     	setLayoutManager();
     	setLocationAndSize();

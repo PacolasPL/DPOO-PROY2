@@ -6,4 +6,5 @@ No se que mas;administrativo;Invitado;68;true
 Sacarme de latinoamerica;administrativa;Invitado;0;true
 Integracion Al grupo;gerencia;Nicolas_Perez;76;true
 Ais;gerencia;Nicolas_Perez;0;true
+Nuevo;Administrativo;Jose_Daniel;0;true
 Hacer mas actualizaciones;Administracion;Jose_Daniel;0;true

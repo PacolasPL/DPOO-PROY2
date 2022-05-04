@@ -15,21 +15,26 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
-public class PrimerMenu extends JFrame {
+public class PrimerMenu extends JFrame implements ActionListener {
 	
 	Container container = getContentPane();
 	
-	JLabel labelMensaje2 = new JLabel("ï¿½Quï¿½ deseas hacer?");
+	private integrante usuario;
+	private Principal principal;
+	JLabel labelMensaje2 = new JLabel("¿Qué deseas hacer?");
 	
 	JButton botonCrear = new JButton("Crear un proyecto");
 	JButton botonAbrir = new JButton("Abrir un proyecto existente");
 	JButton botonConsultar = new JButton("Consultar mis proyectos");
 	
-	JButton botonAcabar = new JButton("Cerrar sesiï¿½n");
+	JButton botonAcabar = new JButton("Cerrar sesión");
 		
-    PrimerMenu(integrante usuario)
+    PrimerMenu(integrante usuario, Principal principal)
     {
     	this.setTitle("Project Manager");
+    	
+    	this.usuario = usuario;
+		this.principal = principal;
     	
     	String name = usuario.getName();
     	String mensaje = "Bienvenido, " + name;
@@ -38,35 +43,7 @@ public class PrimerMenu extends JFrame {
     	setLayoutManager();
     	setLocationAndSize(labelMensaje);
     	addComponentsToContainer(labelMensaje);
-    	
-    	botonCrear.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				CrearProyecto crearProy = new CrearProyecto(usuario);
-	            crearProy.setVisible(true);
-			}
-    		
-    	});
-    	
-    	botonAbrir.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				CrearProyecto crearProy = new CrearProyecto(usuario);
-	            crearProy.setVisible(true);
-			}
-    		
-    	});
-    	botonAbrir.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				AbrirProyecto abrirProy = new AbrirProyecto(usuario);
-	            abrirProy.setVisible(true);
-				
-			}
-    		
-    	});
+    	addActionEvent();
     	
 		JPanel reg = new JPanel();
 		labelMensaje.setFont(new Font("Yu Gothic", Font.PLAIN, 18));
@@ -113,6 +90,36 @@ public class PrimerMenu extends JFrame {
         
         container.add(botonAcabar);
     }
+
+    public void addActionEvent() {
+    	botonCrear.addActionListener(this);
+    	botonAbrir.addActionListener(this);
+		botonConsultar.addActionListener(this);
+		botonAcabar.addActionListener(this);
+    }
+    
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == botonCrear) {
+			CrearProyecto crearProy = new CrearProyecto(usuario);
+	        crearProy.setVisible(true);
+        }
+		
+		if (e.getSource() == botonAbrir) {
+			AbrirProyecto abrirProy = new AbrirProyecto(this.usuario, this);
+            abrirProy.setVisible(true);
+        }
+
+		if (e.getSource() == botonConsultar) {
+			ConsultarProyectos conProy = new ConsultarProyectos(usuario, this);
+			conProy.setVisible(true);
+		}
+
+		if (e.getSource() == botonAcabar) {
+			this.setVisible(false);
+			this.principal.setVisible(true);
+		}
+	}
     
 }
   

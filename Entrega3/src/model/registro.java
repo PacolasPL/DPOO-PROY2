@@ -35,15 +35,16 @@ public class registro {
 		return this.comentarios;
 	}
 	
-	public String createString() {
+	public String[] createString() {
 		String data = "";
-		data += "\nActividad: " + actividadTrabajada +"\n";
-		data += "Amigo: " + aCargoDe;
-		data += "\nFecha de Inicio: " + inicio.toString() +"\n";
-		data += "\nComentarios: "+ comentarios;
-		data += "\nTiempo transcurrido: " +  Math.abs((segundosTranscurrido/3600)) + " horas, "+ Math.abs((segundosTranscurrido%3600)/60)  +" minutos y " +Integer.toString(Math.abs(segundosTranscurrido%60))+ " segundos." ;
-		data += "\nFecha de finalizacion de turno: " + tiempoFinalizado.toString() +"\n";
-		return data;	
+		data += "Actividad: " + actividadTrabajada +";";
+		data += "Amigo: " + aCargoDe + ";";
+		data += "Fecha de Inicio: " + inicio.toString() +";";
+		data += "Comentarios: "+ comentarios +";";
+		data += "Tiempo transcurrido: " +  Math.abs((segundosTranscurrido/3600)) + " horas, "+ Math.abs((segundosTranscurrido%3600)/60)  +" minutos y " +Integer.toString(Math.abs(segundosTranscurrido%60))+ " segundos.;" ;
+		data += "Fecha de finalizacion de turno: " + tiempoFinalizado.toString() +";";
+		String[] dataList = data.split(";");
+		return dataList;
 	}
 	
 	public void putAll(LocalDateTime inicio, LocalDateTime finaL , int tiempoFinal , String comentario) {

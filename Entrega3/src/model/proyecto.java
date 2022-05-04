@@ -68,10 +68,16 @@ public class proyecto {
 		registros.delLastLog(0);
 		registros.addLog(inicial);
 	}
-	
+	public registro getByIndex(int index) {
+		registro reg = registros.getByIndex(index);
+		return reg;
+	}
+	public String [] getLogData(){
+		String[] set= registros.getSetActs();
+		return set;
+	}
 	// Cambia el tiempoTranscurrido a la cantidad (entera)
 	// ingresada.
-	
 	public void putCurrentTime(String seconds) {
 		this.tiempoTranscurrido = Integer.parseInt(seconds);
 	}

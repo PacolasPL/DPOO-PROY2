@@ -23,7 +23,7 @@ public class controladorProyecto {
 	private HashMap<String, integrante> usuarios;
 	private actividad ActividadActual;
 	private registro registroActual;
-	
+
 	// Se ingresa un proyecto, se cargan los usuarios en base a este proyecto y
 	// se establece como la variable "Proy" del controlador.
 	
@@ -31,7 +31,15 @@ public class controladorProyecto {
 		cargarUsuarios();
 		this.Proy= Proy;
 	}
-	
+
+	public String [] getLogData(){
+		String[] set = this.Proy.getLogData();
+		return set;
+	}
+
+	public actividad getActividadActual(){
+		return this.ActividadActual;
+	}
 	// Retorna un String con el nombre del integrante al que se atribuye el registro.
 	
 	public String getCurrentLog() {
@@ -70,8 +78,8 @@ public class controladorProyecto {
 	// Retorna una actividad de un integrante ingresado, junto con su index
 	// respectivo.
 	
-	public actividad getAmigoActividad(integrante amigo, int option) {
-		return amigo.getActividad(option-1);
+	public actividad getAmigoActividad(integrante amigo, String nameAct) {
+		return amigo.getActividad(nameAct);
 	}
 	
 	
@@ -98,6 +106,10 @@ public class controladorProyecto {
 		integrante amigo = usuarios.get(name);
 		String mensaje = amigo.hasAct(act);
 		return mensaje;
+	}
+	public registro getByIndex(int index) {
+		registro reg = Proy.getByIndex(index);
+		return reg;
 	}
 	// Realiza el protocolo de iniciar una actividad en el proyecto:
 	// 
@@ -200,7 +212,7 @@ public class controladorProyecto {
 	
 	// Retorna un String con la lista de actividades pendientes de un integrante ingresado.
 	
-	public String getActividades(integrante Amigo)
+	public String[] getActividades(integrante Amigo)
 	
 	{
 		return Amigo.mostrarPendientes();
